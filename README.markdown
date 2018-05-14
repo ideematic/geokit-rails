@@ -564,6 +564,19 @@ heading  = home.heading_to(work) # result is in degrees, 0 is north
 endpoint = home.endpoint(90,2)  # two miles due east
 midpoint = home.midpoint_to(work)
 ```
+Some tips when you want to use distance_from to heading_to, etc.. with an another model for storing your location
+The gem Geokit try to get the position based on the current model you provide
+ex: company.lat or we want company.location.lat
+So just declare some delegate in your current model
+```ruby
+class Company < ActiveRecord::Base
+  has_one :location, :as => :locatable  # also works for belongs_to associations
+  acts_as_mappable :through => :location
+  
+  delegate :lat, to: :location
+  delegate :lng, to: :location
+end
+```
 
 ## Cool stuff you can do with bounds
 
